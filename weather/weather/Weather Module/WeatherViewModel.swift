@@ -6,12 +6,19 @@
 //
 
 protocol WeatherViewModelProtocol {
-    func sendSearchBarData()
+    func sendSearchBarData(searchQuery: String)
 }
 
 class WeatherViewModel: WeatherViewModelProtocol {
-    func sendSearchBarData() {
-        //
+    
+    private let networkService: NetworkService
+    
+    init(networkService: NetworkService) {
+        self.networkService = networkService
+    }
+    
+    func sendSearchBarData(searchQuery: String) {
+       networkService.getCityWeather(name: searchQuery)
     }
     
 }

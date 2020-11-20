@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navController = UINavigationController()
         window?.rootViewController = navController
         
-        let model = WeatherViewModel()
+        let model = WeatherViewModel(networkService: NetworkService())
         let controller = WeatherViewController(viewModel: model)
         navController.pushViewController(controller, animated: true)
         
