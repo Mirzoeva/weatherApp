@@ -17,6 +17,7 @@
 		A12C9BF425636C7300C518AB /* weatherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12C9BF325636C7300C518AB /* weatherUITests.swift */; };
 		A12C9C0A25672C4B00C518AB /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12C9C0925672C4B00C518AB /* WeatherViewModel.swift */; };
 		A13A775525673D6200DEC033 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13A775425673D6200DEC033 /* NetworkService.swift */; };
+		A13A775A2567432A00DEC033 /* CityWeatherResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13A77592567432A00DEC033 /* CityWeatherResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		A12C9BF525636C7300C518AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A12C9C0925672C4B00C518AB /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		A13A775425673D6200DEC033 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		A13A77592567432A00DEC033 /* CityWeatherResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityWeatherResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				A12C9BD525636C7000C518AB /* WeatherViewController.swift */,
 				A12C9C0925672C4B00C518AB /* WeatherViewModel.swift */,
 				A13A775425673D6200DEC033 /* NetworkService.swift */,
+				A13A77592567432A00DEC033 /* CityWeatherResponse.swift */,
 			);
 			path = "Weather Module";
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A13A775A2567432A00DEC033 /* CityWeatherResponse.swift in Sources */,
 				A13A775525673D6200DEC033 /* NetworkService.swift in Sources */,
 				A12C9BD625636C7000C518AB /* WeatherViewController.swift in Sources */,
 				A12C9C0A25672C4B00C518AB /* WeatherViewModel.swift in Sources */,

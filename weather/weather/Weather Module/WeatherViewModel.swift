@@ -5,8 +5,10 @@
 //  Created by Ума Мирзоева on 20.11.2020.
 //
 
+import Foundation
+
 protocol WeatherViewModelProtocol {
-    func sendSearchBarData(searchQuery: String)
+    func sendSearchBarData(searchQuery: String, completion: @escaping (Result<CityWeatherResponse, Error>) -> Void)
 }
 
 class WeatherViewModel: WeatherViewModelProtocol {
@@ -17,8 +19,16 @@ class WeatherViewModel: WeatherViewModelProtocol {
         self.networkService = networkService
     }
     
-    func sendSearchBarData(searchQuery: String) {
-       networkService.getCityWeather(name: searchQuery)
+    func sendSearchBarData(searchQuery: String, completion: @escaping (Result<CityWeatherResponse, Error>) -> Void) {
+        networkService.getCityWeather(name: searchQuery) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    completion(.success(response))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
     }
-    
 }

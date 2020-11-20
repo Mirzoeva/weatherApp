@@ -82,7 +82,15 @@ class WeatherViewController: UIViewController {
 extension WeatherViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel?.sendSearchBarData(searchQuery: searchText)
+        viewModel?.sendSearchBarData(searchQuery: searchText) { result in
+            switch result {
+            case .success(let response):
+                self.cityTextField.text = searchText
+                self.tempreatureTextField.text = "\(response.main.temp - 273.15) °C"
+            case .failure:
+                break
+            }
+        }
     }
     
 }
