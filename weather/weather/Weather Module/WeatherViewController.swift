@@ -14,6 +14,7 @@ class WeatherViewController: UIViewController {
     private let cityTextField: UITextField
     private let weatherImageView: UIImageView
     private let tempreatureTextField: UITextField
+    private let containerView: UIView
     
     init(viewModel: WeatherViewModelProtocol) {
         self.viewModel = viewModel
@@ -21,6 +22,7 @@ class WeatherViewController: UIViewController {
         self.cityTextField = UITextField()
         self.tempreatureTextField = UITextField()
         self.weatherImageView = UIImageView()
+        self.containerView = UIView()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,6 +41,7 @@ class WeatherViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
         
+        containerView.backgroundColor = .white
         searchBar.delegate = self
         cityTextField.placeholder = "Город"
         tempreatureTextField.placeholder = "Температура"
@@ -46,32 +49,51 @@ class WeatherViewController: UIViewController {
         weatherImageView.contentMode = .scaleAspectFit
     }
     
+    override func viewDidLayoutSubviews() {
+            super.viewDidLayoutSubviews()
+            containerView.layer.cornerRadius = 25
+            containerView.layer.shadowColor = UIColor.gray.cgColor
+            containerView.layer.shadowPath = UIBezierPath(rect: containerView.bounds).cgPath
+            containerView.layer.shadowRadius = 5
+            containerView.layer.shadowOffset = .zero
+            containerView.layer.shadowOpacity = 0.3
+    }
+    
     private func setupLayout() {
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(containerView)
+        view.addSubview(searchBar)
+        
         cityTextField.translatesAutoresizingMaskIntoConstraints = false
         tempreatureTextField.translatesAutoresizingMaskIntoConstraints = false
         weatherImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(searchBar)
-        view.addSubview(cityTextField)
-        view.addSubview(tempreatureTextField)
-        view.addSubview(weatherImageView)
+        containerView.addSubview(cityTextField)
+        containerView.addSubview(tempreatureTextField)
+        containerView.addSubview(weatherImageView)
         
         NSLayoutConstraint.activate([
+            
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.leftAnchor.constraint(equalTo: view.leftAnchor),
             searchBar.rightAnchor.constraint(equalTo: view.rightAnchor),
             
-            cityTextField.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
-            cityTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            containerView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
+            containerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            containerView.heightAnchor.constraint(equalToConstant: 105),
+            
+            cityTextField.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+            cityTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
             
             tempreatureTextField.topAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: 20),
-            tempreatureTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            tempreatureTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20),
             
-            weatherImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            weatherImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            weatherImageView.heightAnchor.constraint(equalToConstant: 200),
-            weatherImageView.widthAnchor.constraint(equalToConstant: 200)
+            weatherImageView.leadingAnchor.constraint(equalTo: cityTextField.trailingAnchor),
+            weatherImageView.trailingAnchor.constraint(equalTo: containerView.layoutMarginsGuide.trailingAnchor),
+            weatherImageView.heightAnchor.constraint(equalToConstant: 100),
+            weatherImageView.widthAnchor.constraint(equalToConstant: 100)
             
         ])
         
