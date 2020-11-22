@@ -8,7 +8,15 @@
 import Foundation
 
 protocol NetworkServiceProtocol {
-    func getCityWeather(name: String, completion: @escaping (Result<CityWeatherResponse, Error>) -> Void)
+    func getCityWeather(
+        name: String,
+        completion: @escaping (Result<CityWeatherResponse, Error>) -> Void
+    )
+    
+    func getWeatherImage(
+        imageName: String,
+        completion: @escaping (Result<Data, Error>) -> Void
+    )
     
 }
 
@@ -19,15 +27,28 @@ class NetworkService {
     func getCityWeather(name: String,
                         completion: @escaping (Result<CityWeatherResponse, Error>) -> Void) {
         let url = Endpoint.getCityWeather(name: name).url
-        print(url.absoluteString)
         let dataTask = urlSession.dataTask(with: url) { data, response, error in
             if let data = data {
-                print(try? JSONSerialization.jsonObject(with: data, options: [.allowFragments]))
                 guard let weatherResponse = try? JSONDecoder().decode(CityWeatherResponse.self, from: data) else {
                     completion(.failure(Errors.failExtractData))
                     return
                 }
                 completion(.success(weatherResponse))
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+        dataTask.resume()
+    }
+    
+    func getWeatherImage(
+        imageName: String,
+        completion: @escaping (Result<Data, Error>) -> Void
+    ) {
+        let url = Endpoint.getWeatherImage(name: imageName).url
+        let dataTask = urlSession.dataTask(with: url) { data, response, error in
+            if let data = data {
+                completion(.success(data))
             } else if let error = error {
                 completion(.failure(error))
             }
@@ -42,11 +63,14 @@ class NetworkService {
     
     enum Endpoint {
         case getCityWeather(name: String)
+        case getWeatherImage(name: String)
         
         var path: String {
             switch self {
             case .getCityWeather:
                 return "https://api.openweathermap.org/data/2.5/weather"
+            case .getWeatherImage(let name):
+                return "https://openweathermap.org/img/wn/\(name)@4x.png"
             }
         }
         
@@ -57,6 +81,8 @@ class NetworkService {
                     "q": name,
                     "appid": NetworkService.apiKey
                 ]
+            case .getWeatherImage:
+                return [:]
             }
         }
         

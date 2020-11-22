@@ -76,6 +76,17 @@ class WeatherViewController: UIViewController {
         ])
         
     }
+    
+    private func loadImage(imageName: String) {
+        viewModel?.loadImage(imageName: imageName) { result in
+            switch result {
+            case .success(let data):
+                self.weatherImageView.image = UIImage(data: data)
+            case .failure:
+                break
+            }
+        }
+    }
 
 }
 
@@ -87,6 +98,7 @@ extension WeatherViewController: UISearchBarDelegate {
             case .success(let response):
                 self.cityTextField.text = searchText
                 self.tempreatureTextField.text = "\(response.main.temp - 273.15) °C"
+                self.loadImage(imageName: response.weather.first?.icon ?? "")
             case .failure:
                 break
             }
