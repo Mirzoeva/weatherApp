@@ -14,8 +14,11 @@ protocol WeatherDetailedViewModelProtocol {
 class WeatherDetailedViewModel: WeatherDetailedViewModelProtocol {
     private let networkService: NetworkService
     
-    init(networkService: NetworkService) {
+    let cityName: String
+    
+    init(networkService: NetworkService, cityName: String) {
         self.networkService = networkService
+        self.cityName = cityName
     }
     
 }

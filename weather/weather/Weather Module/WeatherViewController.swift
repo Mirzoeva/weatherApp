@@ -41,10 +41,15 @@ class WeatherViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
         
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(containerTapped))
+        containerView.addGestureRecognizer(gestureRecognizer)
         containerView.backgroundColor = .white
+        
         searchBar.delegate = self
         cityTextField.placeholder = "Город"
+        cityTextField.isUserInteractionEnabled = false
         tempreatureTextField.placeholder = "Температура"
+        tempreatureTextField.isUserInteractionEnabled = false
         weatherImageView.image = UIImage(systemName: "cloud")
         weatherImageView.contentMode = .scaleAspectFit
     }
@@ -97,6 +102,11 @@ class WeatherViewController: UIViewController {
             
         ])
         
+    }
+    
+    @objc private func containerTapped() {
+        let controller = ViewBuilder.singleton.createDetailedViewController(city: cityTextField.text ?? "")
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     private func loadImage(imageName: String) {

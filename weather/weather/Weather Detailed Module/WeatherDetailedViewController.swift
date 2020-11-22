@@ -28,6 +28,7 @@ class WeatherDetailedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = viewModel.cityName
         setupLayout()
     }
     
