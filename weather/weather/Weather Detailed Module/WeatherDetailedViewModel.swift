@@ -16,9 +16,27 @@ class WeatherDetailedViewModel: WeatherDetailedViewModelProtocol {
     
     let cityName: String
     
+    var dataSource: [List] = []
+    
+    
     init(networkService: NetworkService, cityName: String) {
         self.networkService = networkService
         self.cityName = cityName
+    }
+    
+    func loadCityForecast(completion: @escaping () -> Void) {
+        networkService.getCityForecast(
+            cityname: cityName) { result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.dataSource = response.list
+                    completion()
+                }
+            case .failure:
+                break
+            }
+        }
     }
     
 }

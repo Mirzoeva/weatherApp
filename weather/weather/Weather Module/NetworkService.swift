@@ -18,9 +18,14 @@ protocol NetworkServiceProtocol {
         completion: @escaping (Result<Data, Error>) -> Void
     )
     
+    func getCityForecast(
+        cityname: String,
+        completion: @escaping (Result<CityDetailedWeatherResponse, Error>) -> Void
+    )
 }
 
-class NetworkService {
+class NetworkService: NetworkServiceProtocol {
+    
     private static let apiKey = "73f03797062f1017f0dc06014c2df1c4"
     private let urlSession = URLSession(configuration: .default)
     
@@ -56,6 +61,22 @@ class NetworkService {
         dataTask.resume()
     }
     
+    func getCityForecast(cityname: String, completion: @escaping (Result<CityDetailedWeatherResponse, Error>) -> Void) {
+        let url = Endpoint.getCityForecast(name: cityname).url
+        let dataTask = urlSession.dataTask(with: url) { data, response, error in
+            if let data = data {
+                guard let forecastResponse = try? JSONDecoder().decode(CityDetailedWeatherResponse.self, from: data) else{
+                    completion(.failure(Errors.failExtractData))
+                    return
+                }
+                completion(.success(forecastResponse))
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }
+        dataTask.resume()
+    }
+    
     enum Errors: Error {
         case failExtractData
     }
@@ -64,6 +85,7 @@ class NetworkService {
     enum Endpoint {
         case getCityWeather(name: String)
         case getWeatherImage(name: String)
+        case getCityForecast(name: String)
         
         var path: String {
             switch self {
@@ -71,6 +93,8 @@ class NetworkService {
                 return "https://api.openweathermap.org/data/2.5/weather"
             case .getWeatherImage(let name):
                 return "https://openweathermap.org/img/wn/\(name)@4x.png"
+            case .getCityForecast:
+                return "https://api.openweathermap.org/data/2.5/forecast"
             }
         }
         
@@ -83,6 +107,11 @@ class NetworkService {
                 ]
             case .getWeatherImage:
                 return [:]
+            case .getCityForecast(let name):
+                return [
+                    "q": name,
+                    "appid": NetworkService.apiKey
+                ]
             }
         }
         

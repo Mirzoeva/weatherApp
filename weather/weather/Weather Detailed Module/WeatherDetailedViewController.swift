@@ -14,6 +14,8 @@ class WeatherDetailedViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.backgroundColor = .white
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
+        tableView.dataSource = self
         return tableView
     }()
     
@@ -30,6 +32,9 @@ class WeatherDetailedViewController: UIViewController {
         super.viewDidLoad()
         title = viewModel.cityName
         setupLayout()
+        viewModel.loadCityForecast { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
     
     private func setupLayout() {
@@ -44,4 +49,17 @@ class WeatherDetailedViewController: UIViewController {
         ])
         
     }
+}
+
+extension WeatherDetailedViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.dataSource.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
+        cell.textLabel?.text = viewModel.dataSource[indexPath.row].dtTxt
+        return cell
+    }
+    
 }

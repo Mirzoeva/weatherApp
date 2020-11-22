@@ -11,7 +11,6 @@
 
 import Foundation
 
-// MARK: - CityDetailedWeatherResponse
 struct CityDetailedWeatherResponse: Codable {
     let cod: String
     let message, cnt: Int
@@ -101,7 +100,7 @@ struct DetailedWeather: Codable {
     let id: Int
     let main: MainEnum
     let weatherDescription: Description
-    let icon: Icon
+    let icon: String
 
     enum CodingKeys: String, CodingKey {
         case id, main
@@ -110,20 +109,16 @@ struct DetailedWeather: Codable {
     }
 }
 
-enum Icon: String, Codable {
-    case the03N = "03n"
-    case the04D = "04d"
-    case the04N = "04n"
-    case the10N = "10n"
-}
-
 enum MainEnum: String, Codable {
+    case clear = "Clear"
     case clouds = "Clouds"
     case rain = "Rain"
 }
 
 enum Description: String, Codable {
     case brokenClouds = "broken clouds"
+    case clearSky = "clear sky"
+    case fewClouds = "few clouds"
     case lightRain = "light rain"
     case overcastClouds = "overcast clouds"
     case scatteredClouds = "scattered clouds"
