@@ -30,11 +30,29 @@ class WeatherDetailedViewModel: WeatherDetailedViewModelProtocol {
             switch result {
             case .success(let response):
                 DispatchQueue.main.async {
-                    self.dataSource = response.list
+                    guard let list = response.list else { return }
+                    self.dataSource = list
+                    for i in 0..<self.dataSource.count {
+                        let temp = self.dataSource[i].main?.temp ?? 0.0
+                        self.dataSource[i].main?.temp = temp - 273.0
+                    }
                     completion()
                 }
             case .failure:
                 break
+            }
+        }
+    }
+    
+    func loadImage(imageName: String, completion: @escaping (Data?) -> Void) {
+        networkService.getWeatherImage(imageName: imageName) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let data):
+                    completion(data)
+                case .failure:
+                    completion(nil)
+                }
             }
         }
     }

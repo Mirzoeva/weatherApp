@@ -12,10 +12,13 @@ class WeatherDetailedViewController: UIViewController {
     private let viewModel: WeatherDetailedViewModel
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .white
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
+        tableView.register(WeatherCityTableViewCell.self, forCellReuseIdentifier: "CustomCellId")
+        tableView.rowHeight = 92
         tableView.dataSource = self
+        tableView.separatorStyle = .singleLine
         return tableView
     }()
     
@@ -57,9 +60,15 @@ extension WeatherDetailedViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
-        cell.textLabel?.text = viewModel.dataSource[indexPath.row].dtTxt
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCellId", for: indexPath) as? WeatherCityTableViewCell {
+            cell.dataSource = viewModel.dataSource[indexPath.row]
+            viewModel.loadImage(
+                imageName: viewModel.dataSource[indexPath.row].weather?.first?.icon ?? "") { data in
+                cell.imageData = data
+            }
+            return cell
+        }
+        return UITableViewCell()
     }
     
 }

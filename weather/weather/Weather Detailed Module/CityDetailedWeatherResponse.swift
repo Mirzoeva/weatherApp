@@ -10,39 +10,39 @@
 //   let cityDetailedWeatherResponse = try? newJSONDecoder().decode(CityDetailedWeatherResponse.self, from: jsonData)
 
 import Foundation
-
+// MARK: - CityDetailedWeatherResponse
 struct CityDetailedWeatherResponse: Codable {
-    let cod: String
-    let message, cnt: Int
-    let list: [List]
-    let city: City
+    let cod: String?
+    let message, cnt: Int?
+    let list: [List]?
+    let city: City?
 }
 
 // MARK: - City
 struct City: Codable {
-    let id: Int
-    let name: String
-    let coord: DetailedCoord
-    let country: String
-    let population, timezone, sunrise, sunset: Int
+    let id: Int?
+    let name: String?
+    let coord: Coord?
+    let country: String?
+    let population, timezone, sunrise, sunset: Int?
 }
 
 // MARK: - Coord
 struct DetailedCoord: Codable {
-    let lat, lon: Double
+    let lat, lon: Double?
 }
 
 // MARK: - List
 struct List: Codable {
-    let dt: Int
-    let main: MainClass
-    let weather: [DetailedWeather]
-    let clouds: DetailedClouds
-    let wind: DetailedWind
-    let visibility: Int
-    let pop: Double
-    let sys: DetailedSys
-    let dtTxt: String
+    let dt: Int?
+    var main: MainClass?
+    let weather: [DetailedWeather]?
+    let clouds: DetailedClouds?
+    let wind: DetailedWind?
+    let visibility: Int?
+    let pop: Double?
+    let sys: DetailedSys?
+    let dtTxt: String?
     let rain: Rain?
 
     enum CodingKeys: String, CodingKey {
@@ -54,14 +54,14 @@ struct List: Codable {
 
 // MARK: - Clouds
 struct DetailedClouds: Codable {
-    let all: Int
+    let all: Int?
 }
 
 // MARK: - MainClass
 struct MainClass: Codable {
-    let temp, feelsLike, tempMin, tempMax: Double
-    let pressure, seaLevel, grndLevel, humidity: Int
-    let tempKf: Double
+    var temp, feelsLike, tempMin, tempMax: Double?
+    let pressure, seaLevel, grndLevel, humidity: Int?
+    let tempKf: Double?
 
     enum CodingKeys: String, CodingKey {
         case temp
@@ -78,7 +78,7 @@ struct MainClass: Codable {
 
 // MARK: - Rain
 struct Rain: Codable {
-    let the3H: Double
+    let the3H: Double?
 
     enum CodingKeys: String, CodingKey {
         case the3H = "3h"
@@ -87,7 +87,7 @@ struct Rain: Codable {
 
 // MARK: - Sys
 struct DetailedSys: Codable {
-    let pod: Pod
+    let pod: Pod?
 }
 
 enum Pod: String, Codable {
@@ -97,10 +97,9 @@ enum Pod: String, Codable {
 
 // MARK: - Weather
 struct DetailedWeather: Codable {
-    let id: Int
-    let main: MainEnum
-    let weatherDescription: Description
-    let icon: String
+    let id: Int?
+    let main: MainEnum?
+    let weatherDescription, icon: String?
 
     enum CodingKeys: String, CodingKey {
         case id, main
@@ -115,17 +114,8 @@ enum MainEnum: String, Codable {
     case rain = "Rain"
 }
 
-enum Description: String, Codable {
-    case brokenClouds = "broken clouds"
-    case clearSky = "clear sky"
-    case fewClouds = "few clouds"
-    case lightRain = "light rain"
-    case overcastClouds = "overcast clouds"
-    case scatteredClouds = "scattered clouds"
-}
-
 // MARK: - Wind
 struct DetailedWind: Codable {
-    let speed: Double
-    let deg: Int
+    let speed: Double?
+    let deg: Int?
 }
