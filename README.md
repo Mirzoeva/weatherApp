@@ -8,4 +8,4 @@
 
 Для получения данных о прогнозах погоды было взято API _openweathermap.org_. 
 
-![Alt Text](weather.gif =375x812 )
+<img src="weather.gif" width="375" height="812" />
